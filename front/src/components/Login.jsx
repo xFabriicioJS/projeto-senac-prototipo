@@ -8,10 +8,12 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Button
+  Button,
+  Text
 } from '@chakra-ui/react';
 import ErrorMessage from "./ErrorMessage";
-
+import background from "../images/backgroundLogin.jpg";
+import {AiOutlineUser, AiOutlineKey} from 'react-icons/ai';
 
 const required = (value) => {
     if (!value) {
@@ -26,79 +28,70 @@ const required = (value) => {
 
 const Login = () => {
     let navigate =  useNavigate();
-    const form = useRef();
 
-    const checkBtn = useRef();
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [loading, setLoading] = useState(false);
+  
     const [message, setMessage] = useState("");
 
     //Funções de evento no input
-    const onChangeUsername = (e) => {
-        const username = e.target.value;
-        setUsername(username);
-      };
-      const onChangePassword = (e) => {
-        const password = e.target.value;
-        setPassword(password);
-      };
+    // const onChangeUsername = (e) => {
+    //     const username = e.target.value;
+    //     setUsername(username);
+    //   };
+    //   const onChangePassword = (e) => {
+    //     const password = e.target.value;
+    //     setPassword(password);
+    //   };
 
       const handleLogin = (e) => {
-        e.preventDefault();
+        console.log(username, password);
         setMessage("");
-        setLoading(true);
-        
-          if(password.length > 0 && username.length > 0)
-                {
+                
                 AuthService.login(username, password).then(
                     ()=>{
                         navigate("/profile");
                         window.location.reload();
                     },
                     (error) => {
-                        const resMessage = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
-                        setLoading(false);
-                        setMessage(resMessage);
-                        setUsername('');
-                        setPassword('');
+                        setMessage('Verifique a senha por favor.');    
                     }
                 );
-            } else {
-                setLoading(false);
-            }
+            
       }
 
       return(
         
 <>
-<Box>
-  <nav>
-    Pagina Inicia
-  </nav>
-</Box>
-        <Flex width="full" align="center" justifyContent="center">
+        <Flex mt="10" width="full" align="center" justifyContent="center"  bg
+  bgPosition="center"
+  bgRepeat="no-repeat"
+  backgroundRepeat="no-repeat" h="h-full" bgImage="url('/images/backgroundLogin')">
       <Box p={20} display="flex" flexDirection="column"  alignItems="center"width= "30%" backgroundColor="teal.100" borderRadius="15">
         <Box textAlign="center">
           <Heading>Login</Heading>
         </Box>
         <Box my={4} textAlign="left">
-                <form onSubmit={handleLogin}>
+                
                 {message && <ErrorMessage message={message} />}
           <FormControl isRequired>
             <FormLabel>Email</FormLabel>
-            <Input
-              type="username"
-              placeholder="Nome de usuário"
-              size="lg"
-              onChange={event => setUsername(event.currentTarget.value)}
-              variant="filled"
-
-            />
+            <Box display="flex">
+              <Input
+                type="username"
+                placeholder="Email"
+                size="lg"
+                onChange={event => setUsername(event.currentTarget.value)}
+                variant="filled"
+                
+              />
+              <AiOutlineUser style={{ backgroundColor:"#EBEBEB", borderRadius:"100%" , fontSize: "30", marginTop:"8", width: "35px", marginLeft:"10"}}/>
+            </Box>
           </FormControl>
           <FormControl isRequired mt={6}>
-            <FormLabel>Password</FormLabel>
+            <FormLabel>Senha</FormLabel>
+            <Box display="flex">
             <Input
               type="password"
               placeholder="*******"
@@ -106,17 +99,30 @@ const Login = () => {
               onChange={event => setPassword(event.currentTarget.value)}
               variant="filled"
             />
+            <AiOutlineKey style={{ backgroundColor:"#EBEBEB", borderRadius:"100%" , fontSize: "30", marginTop:"8", width: "35px", marginLeft:"10"}}/>
+            </Box>
           </FormControl>
           <Button
-            variantColor="green"
+            colorScheme="green"
             variant="solid"
             type="submit"
             width="full"
             mt={4}
+            onClick={handleLogin}
           >
             Entrar
           </Button>
-        </form>
+          <Text mt="2">
+            Ainda não possui conta? Crie a sua agora!
+          </Text>
+          <Button
+          colorScheme="blue"
+          variant="solid"
+          width="full"
+          mt={4}
+          onClick={()=>{navigate("/register")}}>
+            Registrar-se
+          </Button>
         </Box>
       </Box>
     </Flex>

@@ -1,16 +1,30 @@
 import { Avatar, Box, Button, Divider, Flex, Heading, Image, Text } from "@chakra-ui/react";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { Navigate } from "react-router-dom";
 import AuthService from "../services/auth.service";
 import DrawerMenu from "./DrawerMenu";
+
+
+
 const Profile = () => {
-  const currentUser = AuthService.getCurrentUser();
+
+const [currentUser,setCurrentUser] = useState(undefined);
 
 useEffect(()=>{
+
+  
+  const user = AuthService.getCurrentUser();
+
+
+  if (user) {
+    setCurrentUser(user);
+  }
 
   // requisicao para obter dados do usuário
 
 },[])
 
+if(currentUser){
   return (
     <>
     <DrawerMenu/>
@@ -77,6 +91,14 @@ useEffect(()=>{
   </>     
 
   );
+} else {
+  return(
+    <>
+      Você precisa estar autenticado para acessar essa página!
+    </>
+
+  )
+}
 };
 export default Profile;
 

@@ -13,6 +13,7 @@ import { Avatar, Box, Button, Drawer, DrawerBody, DrawerCloseButton, DrawerConte
 import { AuthProvider, useAuth } from "./context/auth.context";
 import AddChamado from "./components/AddChamado";
 import ViewChamado from "./components/ViewChamado";
+
 const App = () => {
 
   const { isOpen, onOpen, onClose } = useDisclosure()

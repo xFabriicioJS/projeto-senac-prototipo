@@ -1,7 +1,8 @@
-import { Box, Button, Divider, Flex, FormControl, FormLabel, Heading, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spinner, Switch, Text, Textarea, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, Divider, Flex, Heading, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spinner, Switch, Text, Textarea, useDisclosure } from '@chakra-ui/react';
 import React, { useState, useEffect } from 'react'
 
-import { useLocation } from 'react-router-dom'
+import { Navigate, useLocation } from 'react-router-dom'
+import AuthService from '../services/auth.service';
 import TicketService from '../services/ticket.service';
 import DrawerMenu from './DrawerMenu';
 
@@ -15,18 +16,27 @@ function ViewChamado() {
   let location = useLocation();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [data, setData] = useState({});
+  const [currentUser, setCurrentUser] = useState(undefined);
 
 
   useEffect(()=>{
+    const user = AuthService.getCurrentUser();
+
+
+    if (user) {
+      setCurrentUser(user);
+    }
     // setData(TicketService.getChamadoById(location.state.id));
    setTimeout(()=>{TicketService.getChamadoById(location.state.id).then((response) => setData(response.data));
     console.log(data);
     // console.log(data);
     // console.log(data);
+    
     setLoading(false)},1000)     
   },[]);
 
-if(loading){
+if(currentUser){
+  if(loading){
   return (
     <Flex justifyContent="center" align="center" h="100vh">
        <Box>
@@ -140,7 +150,7 @@ if(loading){
 
           <Box rounded="md" p="1"  backgroundColor="whiteAlpha.900">
           <Button colorScheme="red" size="sm" rounded="2xl">
-            {data.statusChamado.replace('_', ' ')}
+            {data.statusChamado?.replace('_', ' ')}
           </Button>
           </Box>
           </Box>
@@ -176,6 +186,13 @@ if(loading){
     </Box>
   </Flex>
   </>
+  )
+}
+}else {
+  return (
+    <>
+      Você precisa estar autenticado para acessar essa página!
+    </>
   )
 }
 }

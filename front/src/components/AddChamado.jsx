@@ -3,17 +3,27 @@ import React, { useEffect, useState } from "react";
 import ErrorMessage from "./ErrorMessage";
 import DatePicker from "react-datepicker";
 import { AiFillCheckCircle } from "react-icons/ai"
-
-
-import "./datepickerstyle.css";
+import AuthService, {isAuth} from '../services/auth.service'
 
 import "react-datepicker/dist/react-datepicker.css";
 import DrawerMenu from "./DrawerMenu";
 import moment from "moment";
 import TicketService from "../services/ticket.service";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 function AddChamado() {
+
+
+  useEffect(()=>{
+
+    const user = AuthService.getCurrentUser();
+
+
+    if (user) {
+      setCurrentUser(user);
+    }
+
+  },[]);
 
   const OverlayOne = () => (
     <ModalOverlay
@@ -28,7 +38,7 @@ function AddChamado() {
     const [urgencia, setUrgencia] = useState(false);
     const [tipoChamado, setTipoChamado] = useState('software');
     const [startDate, setStartDate] = useState(new Date());
-
+    const [currentUser, setCurrentUser] = useState(undefined);
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [overlay, setOverlay] = React.useState(<OverlayOne />)
     let navigate = useNavigate();
@@ -61,9 +71,11 @@ function AddChamado() {
         } 
       }
       TicketService.addChamado(chamado);
-
     }
 
+ 
+
+if(currentUser){
   return (
     <>
     <DrawerMenu/>
@@ -166,7 +178,11 @@ function AddChamado() {
       </Box>
     </Flex>
     </>
-  );
+  )
+}else{
+  return(
+    <Navigate to="/login" replace={true} />
+  )
 }
-
+}
 export default AddChamado;

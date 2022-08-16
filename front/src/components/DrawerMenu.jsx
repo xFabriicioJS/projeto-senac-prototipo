@@ -2,12 +2,12 @@ import { Avatar, Box, Button, Drawer, DrawerBody, DrawerCloseButton, DrawerConte
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import AuthService from '../services/auth.service';
+import {GiHamburgerMenu} from 'react-icons/gi'
 
 function DrawerMenu() {
 
     
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [placement, setPlacement] = useState('right');
   const [currentUser, setCurrentUser] = useState(undefined);
   const [showAdminBoard, setShowAdminBoard] = useState(false);
 
@@ -30,7 +30,7 @@ function DrawerMenu() {
 
   return (
     <Box padding="8" display="flex" justifyContent="space-between">
-        <Button onClick={onOpen}>Navegar</Button>
+        <Button onClick={onOpen}><GiHamburgerMenu style={{fontSize: '30px'}}/></Button>
         <Drawer
         isOpen={isOpen}
         placement='left'
