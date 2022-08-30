@@ -64,7 +64,7 @@ function DrawerMenu() {
             {showAdminBoard && (
               <Button variant="outline" mr={3} colorScheme="green" rounded="2xl" size="lg">
               <Link to={"/admin"}>
-                Admin Board
+                Dashboard Admin
               </Link>
               </Button>
           )}

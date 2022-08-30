@@ -16,6 +16,7 @@ import React, { useState, useEffect } from "react";
 import UserService from "../services/user.service";
 import AuthService from "../services/auth.service";
 import TicketService from "../services/ticket.service";
+import DrawerMenu from "./DrawerMenu";
 
 const BoardAdmin = () => {
   const [data, setData] = useState([]);
@@ -45,11 +46,12 @@ const BoardAdmin = () => {
   if (currentUser.roles.includes("ROLE_ADMIN")) {
     return (
       <>
+       <DrawerMenu/>
       <Heading>
       Todos os chamados
       </Heading>
       <TableContainer
-        width="80%"
+        width="95%"
         rounded="2xl"
         borderWidth="1px"
         m="0 auto"

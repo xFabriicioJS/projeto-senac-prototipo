@@ -3,13 +3,13 @@ import React, { useEffect, useState } from "react";
 import ErrorMessage from "./ErrorMessage";
 import DatePicker from "react-datepicker";
 import { AiFillCheckCircle } from "react-icons/ai"
-import AuthService, {isAuth} from '../services/auth.service'
+import AuthService from '../services/auth.service'
 
 import "react-datepicker/dist/react-datepicker.css";
 import DrawerMenu from "./DrawerMenu";
 import moment from "moment";
 import TicketService from "../services/ticket.service";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function AddChamado() {
 
@@ -103,6 +103,7 @@ if(currentUser){
                 size="lg"
                 onChange={(event) => setTitulo(event.currentTarget.value)}
                 variant="filled"
+                required
               />
             </FormControl>
             <FormControl isRequired mt={6}>
@@ -113,7 +114,7 @@ if(currentUser){
                placeholder='Insira uma descrição para adicionar mais detalhes'
                value={descricao}
                onChange={(e)=> setDescricao(e.currentTarget.value)}
-
+               required
                />
             </FormControl>
 
@@ -137,7 +138,8 @@ if(currentUser){
             <FormControl mt={4} isRequired>
             <FormLabel>Escolha um prazo desse chamado</FormLabel>   
             <DatePicker 
-            dateFormat="dd/MM/yyyy" selected={startDate} onChange={(date) => setStartDate(date)} />
+            dateFormat="dd/MM/yyyy" required selected={startDate} onChange={(date) => setStartDate(date)} />
+            
             </FormControl>
 
             <Button
@@ -147,7 +149,7 @@ if(currentUser){
               width="full"
               mt={8}
               onClick={()=>{
-                // handleSubmit();
+                handleSubmit();
                 setOverlay(<OverlayOne />);
                 onOpen();
               }}
@@ -181,7 +183,9 @@ if(currentUser){
   )
 }else{
   return(
-    <Navigate to="/login" replace={true} />
+    <Box>
+      Você precisa estar autenticado para acessar essa página
+    </Box>  
   )
 }
 }
